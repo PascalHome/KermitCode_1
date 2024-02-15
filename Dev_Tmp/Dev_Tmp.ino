@@ -1,4 +1,5 @@
-// 15/Feb/2024 - KermitCode_1-Dev01 to GitHub 
+// 15/Feb/2024 - KermitCode_1-Dev01 to GitHub
+// 15/Feb/2024 - KermitCode_1-Dev02 Arduino IDE From 2.3.0 to 2.3.1
 //-------------------- Included files ----------------------
 #include "DueHardware.h"
 #include "Setup.h"
@@ -30,7 +31,6 @@ byte CurrentState = 0;
 int Day,Month, Year, Hour, Minute,Second,DoW;
 int DoY, DiY, WeekNo, WeekInYear;
 DS3231 SysClock;                // I2C Realtime clock
-//char Buffer[21];              // Buffer for sprintf
 //-----------------------------------------------------
 void setup() {
   ResetUART();
