@@ -1,5 +1,6 @@
 // 15/Feb/2024 - KermitCode_1-Dev01 to GitHub
 // 15/Feb/2024 - KermitCode_1-Dev02 Arduino IDE From 2.3.0 to 2.3.1
+// 15/Feb/2024 - KermitCode_1-Dev03 implementation of check 
 //-------------------- Included files ----------------------
 #include "DueHardware.h"
 #include "Setup.h"
@@ -117,7 +118,10 @@ switch(CurrentState){
   if (Timer2_CurrentMillis - Timer2_PrevoiusMillis >=Timer2_Interval)
   {
    if ((Check_BinActive(IndexCount) == true) 
-      &&  (Check_Month(IndexCount, 2)))
+      && (Check_Month(IndexCount, 2))
+      && (Check_Week (Bin_[IndexCount].CoollectionStartWeek,Bin_[IndexCount].CollectionFrequency, WeekNo))
+      && (Check_Day (IndexCount,DoW))
+    )
     {
      //------------------------- Debug ---------------------------
       Serial.print("Month active  : ");

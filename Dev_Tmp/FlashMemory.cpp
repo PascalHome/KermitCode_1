@@ -35,7 +35,7 @@ byte WriteFlashInit(void){
   Bin_[2].CollectionDay = 4;
   Bin_[2].CoollectionStartWeek = 2;
   Bin_[2].CollectionFrequency = 2;   
-  Bin_[2].CollectionMonth = 0b00001111111111111010;
+  Bin_[2].CollectionMonth = 0b00001111111111111000;
 ///-----------------------------------------------------
   byte FlashArray[sizeof(Bin_)];
   memcpy(FlashArray, &Bin_, sizeof(Bin_));
