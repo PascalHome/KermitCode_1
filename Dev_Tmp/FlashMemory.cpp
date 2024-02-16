@@ -18,7 +18,7 @@ if (CodeRuningFirstTime){
 byte WriteFlashInit(void){
   Bin_[0].Active = true;
   Bin_[0].Colour = Green;
-  Bin_[0].CollectionDay = 1;
+  Bin_[0].CollectionDay = 5;
   Bin_[0].CoollectionStartWeek = 1;
   Bin_[0].CollectionFrequency = 2;   
   Bin_[0].CollectionMonth = 0b00111111111111111111;

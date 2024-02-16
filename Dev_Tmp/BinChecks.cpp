@@ -32,9 +32,12 @@ bool Check_Month(int _Index, int _CurrentMonth){
 }
 
 // Actually we should just pass to the function the array index
-bool Check_Week (byte _StartingWeek,byte _Frequency, byte _CurrentWeekNumber ){
+bool Check_Week (int _Index, byte _CurrentWeekNumber ){
+
+//(Bin_[IndexCount].CoollectionStartWeek,Bin_[IndexCount].CollectionFrequency
+
 boolean CheckVal = false;
-for (byte i=_StartingWeek;i<=53; i=i+_Frequency){
+for (byte i=Bin_[_Index].CoollectionStartWeek;i<=53; i=i+Bin_[_Index].CollectionFrequency){
   if(i==_CurrentWeekNumber){
   CheckVal = true;
   break;

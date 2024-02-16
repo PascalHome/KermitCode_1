@@ -1,6 +1,7 @@
 // 15/Feb/2024 - KermitCode_1-Dev01 to GitHub
 // 15/Feb/2024 - KermitCode_1-Dev02 Arduino IDE From 2.3.0 to 2.3.1
-// 15/Feb/2024 - KermitCode_1-Dev03 implementation of check 
+// 15/Feb/2024 - KermitCode_1-Dev03 implementation of check
+// 16/Feb/2024 - KermitCode_1-Dev04  Refactoring of function Check_Day()
 //-------------------- Included files ----------------------
 #include "DueHardware.h"
 #include "Setup.h"
@@ -119,7 +120,7 @@ switch(CurrentState){
   {
    if ((Check_BinActive(IndexCount) == true) 
       && (Check_Month(IndexCount, 2))
-      && (Check_Week (Bin_[IndexCount].CoollectionStartWeek,Bin_[IndexCount].CollectionFrequency, WeekNo))
+      && (Check_Week(IndexCount, WeekNo))
       && (Check_Day (IndexCount,DoW))
     )
     {
