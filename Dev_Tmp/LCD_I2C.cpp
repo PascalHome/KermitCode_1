@@ -16,7 +16,7 @@ void Display_CurrentBin(byte _Index, byte _DoW, byte _Day, byte _Month, byte _Ye
   Lcd.setCursor(0,1); 
   // Calculate to center test onto the display !!
   // Clear the line 1 before !!
-  sprintf(buf,"%s", BinColour[_Index]);
+  sprintf(buf,"   %s Bin   ", BinColour[_Index]);
   Lcd.print(buf);
 
 }
@@ -31,11 +31,6 @@ sprintf(buf,"    %02d:%02d:%02d", _Hour,_Minute,_Second);
 Lcd.print(buf);
 }
 
-
- //  DoY =    calculateDayOfYear(Day,Month,Year);  // Current day in the year
- //  DiY =    calculateDayOfYear(31,12,Year);      // Number of day in the year
- //  WeekNo = calcWeekNumber(Day,Month,Year);      // Week number
- //  WeekInYear = calcWeekNumber (31,12,Year);;    // number of week in the year
 void Display_DateTimePage_2(byte Colour, int _DoY, int _DiY, int _WeekNo, int _WeekInYear){
  Display_SetColor(Colour);
  Lcd.setCursor(0,0); 

@@ -16,10 +16,10 @@ bool Check_BinActive(int _Index){
   return bitRead(Check,0);
 }
 
-bool Check_Alarm(byte _StartAlarmHours, byte _StartAlarmMinutes, byte _AlarmDuration, byte _CurrentHours, byte _CurrentMinutes ){
-  int AlarmStart = (_StartAlarmHours*60) + _StartAlarmMinutes;
-  int AlarmStop = AlarmStart + _AlarmDuration;
-  int CurrentTime = (_CurrentHours *60) + _CurrentMinutes;  
+bool Check_Alarm(int _Index, byte _CurrentHour, byte _CurrentMinute){
+  int AlarmStart = (Bin_[_Index].AlarmStartHour*60) + Bin_[_Index].AlarmStartMinute;
+  int AlarmStop = AlarmStart + Bin_[_Index].AlarmDuration;
+  int CurrentTime = (_CurrentHour *60) + _CurrentMinute;  
   if (CurrentTime >= AlarmStart && CurrentTime <= AlarmStop ){ 
     return(true);
     } else {

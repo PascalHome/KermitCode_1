@@ -18,23 +18,32 @@ if (CodeRuningFirstTime){
 byte WriteFlashInit(void){
   Bin_[0].Active = true;
   Bin_[0].Colour = Green;
-  Bin_[0].CollectionDay = 5;
+  Bin_[0].CollectionDay = 6;
   Bin_[0].CoollectionStartWeek = 1;
-  Bin_[0].CollectionFrequency = 2;   
+  Bin_[0].CollectionFrequency = 2;
+  Bin_[0].AlarmStartHour   = 19;
+  Bin_[0].AlarmStartMinute = 45;
+  Bin_[0].AlarmDuration    = 5; // Minutes
   Bin_[0].CollectionMonth = 0b00111111111111111111;
 ///-----------------------------------------------------
   Bin_[1].Active = true;
   Bin_[1].Colour = Blue;
-  Bin_[1].CollectionDay = 1;
-  Bin_[1].CoollectionStartWeek = 2;
-  Bin_[1].CollectionFrequency = 2;   
+  Bin_[1].CollectionDay = 6;
+  Bin_[1].CoollectionStartWeek = 1;
+  Bin_[1].CollectionFrequency = 2;
+  Bin_[1].AlarmStartHour  = 19;
+  Bin_[1].AlarmStartMinute = 45;
+  Bin_[1].AlarmDuration   = 10; // Minutes
   Bin_[1].CollectionMonth = 0b00111111111111111111;
 ///-----------------------------------------------------
   Bin_[2].Active = true;
   Bin_[2].Colour = Brown;
   Bin_[2].CollectionDay = 4;
   Bin_[2].CoollectionStartWeek = 2;
-  Bin_[2].CollectionFrequency = 2;   
+  Bin_[2].CollectionFrequency = 2;
+  Bin_[2].AlarmStartHour   = 16;
+  Bin_[2].AlarmStartMinute = 0;
+  Bin_[2].AlarmDuration    = 300; // Minutes  
   Bin_[2].CollectionMonth = 0b00001111111111111000;
 ///-----------------------------------------------------
   byte FlashArray[sizeof(Bin_)];
@@ -58,6 +67,9 @@ if (FS == true){
   Serial.println(Bin_[a].CoollectionStartWeek);
   Serial.println(Bin_[a].CollectionFrequency);
   Serial.println(Bin_[a].CollectionMonth);
+  Serial.println(Bin_[a].AlarmStartHour);
+  Serial.println(Bin_[a].AlarmStartMinute);
+  Serial.println(Bin_[a].AlarmDuration);
   Serial.println("--------------------");  }
    FS = false; } else
    {
@@ -72,6 +84,9 @@ if (FS == true){
   Serial.println(Bin_[a].CoollectionStartWeek);
   Serial.println(Bin_[a].CollectionFrequency);
   Serial.println(Bin_[a].CollectionMonth);
+  Serial.println(Bin_[a].AlarmStartHour);
+  Serial.println(Bin_[a].AlarmStartMinute);
+  Serial.println(Bin_[a].AlarmDuration);
   Serial.println("--------------------");  }
    }
    }

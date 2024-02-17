@@ -5,10 +5,10 @@
 
 enum {NoColour = 0, White, Green, Blue, Brown, Yellow, Red, Gray} colour;
 
-#define AlarmStartHour    16
-#define AlarmStartMinute  30
-#define AlarmStopHour     19   
-#define AlarmStopMinute   55
+// #define AlarmStartHour    16
+// #define AlarmStartMinute  30
+// #define AlarmStopHour     19   
+// #define AlarmStopMinute   55
 
 struct Bin_Type{
   bool Active;                    // 1 Active/ 0 inactive
@@ -16,7 +16,11 @@ struct Bin_Type{
   byte CollectionDay;             // Sunday = 0, Saturday =6
   byte CoollectionStartWeek;      // Start from week 1 to week n
   byte CollectionFrequency;       // Weeks Odd 1 or Even 2
+  byte AlarmStartHour;
+  byte AlarmStartMinute;
+  unsigned int AlarmDuration;     // Duration in minute
   unsigned int CollectionMonth;   // b0011 1111 1111 1111 (12 months)
+
 }; // Structure size 24 bytes
 
 #endif

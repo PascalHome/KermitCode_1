@@ -1,7 +1,10 @@
 // 15/Feb/2024 - KermitCode_1-Dev01 to GitHub
 // 15/Feb/2024 - KermitCode_1-Dev02 Arduino IDE From 2.3.0 to 2.3.1
 // 15/Feb/2024 - KermitCode_1-Dev03 implementation of check
-// 16/Feb/2024 - KermitCode_1-Dev04  Refactoring of function Check_Day()
+// 16/Feb/2024 - KermitCode_1-Dev04 Refactoring of function Check_Day()
+// 16/Feb/2024 - KermitCode_1-Dev05 Integration Hr/Min to Bin structure + record to Flashmemory
+// 17/Feb/2024 - KermitCode_1-Dev06 Integration of no bin
+
 //-------------------- Included files ----------------------
 #include "DueHardware.h"
 #include "Setup.h"
@@ -26,7 +29,7 @@ unsigned long Timer2_PrevoiusMillis = 0;
 unsigned long Timer2_Interval       = 5000;
 unsigned long IndexCount = 0;
 //----------------------- State machine --------------------
-#define InitialStep 3
+#define InitialStep 0
 byte CurrentState = 0;
 #define GoToStep(a) CurrentState = a;  // Textual substitution 
 //--------------------- Global variable --------------
@@ -46,12 +49,12 @@ void setup() {
   //-------------- Offset GDHn -----------------------
   OffsetDateTime(21,Day,Month,Year,Hour,Minute,Second); // Estimated offset 18 seconds
   //------------------Display result -----------------
-  Serial.print("Day of the year: ");
-  Serial.println(calculateDayOfYear(Day, Month, Year));  //Serial.println(calculateDayOfYear(28, 11, 2023));
-  Serial.print("Day of the week: ");  
-  Serial.println(calcDayOfWeek(Day, Month, Year));      //Serial.println(calcDayOfWeek(28, 11, 2023));
-  Serial.print("Week Number: ");
-  Serial.println(calcWeekNumber(Day,Month,Year));      //Serial.println(calcWeekNumber(28,11,2023));
+  // Serial.print("Day of the year: ");
+  // Serial.println(calculateDayOfYear(Day, Month, Year));  //Serial.println(calculateDayOfYear(28, 11, 2023));
+  // Serial.print("Day of the week: ");  
+  // Serial.println(calcDayOfWeek(Day, Month, Year));      //Serial.println(calcDayOfWeek(28, 11, 2023));
+  // Serial.print("Week Number: ");
+  // Serial.println(calcWeekNumber(Day,Month,Year));      //Serial.println(calcWeekNumber(28,11,2023));
   //-------------- Set DS3231 DateTime----------------
   Wire.setClock(400000); // I2C at 400 kHz  
   Wire.begin();
@@ -86,12 +89,6 @@ Timer1_CurrentMillis = millis();
    WeekInYear = NoWeeksInYear (Year);     
    SecondCount++;
 }
-//*************************** Check bin **************************
-// unsigned long Timer2_CurrentMillis  = 0;
-// unsigned long Timer2_PrevoiusMillis = 0;
-// unsigned long Timer2_Interval       = 2000;
-// unsigned long IndexCount = 0;
-
 switch(CurrentState){
  case 0: // initial step ---- Nag Screen
    Display_StartPage(Green,Delay3Second); // White, Green, Blue, Brown, Yellow, Red, Gray
@@ -115,27 +112,35 @@ switch(CurrentState){
     GoToStep(3);}  
  break;
  case 3: // Bin check *******************************************
-  Timer2_CurrentMillis = millis();
+ Timer2_CurrentMillis = millis();
+ if (Check_BinActive(IndexCount) 
+      && (Check_Month(IndexCount, 2))
+      && (Check_Week(IndexCount, WeekNo))
+      && (Check_Day (IndexCount,DoW))
+      && (Check_Alarm (IndexCount,Hour, Minute)) != true
+    ){
+     GoToStep(4);
+    } 
+
   if (Timer2_CurrentMillis - Timer2_PrevoiusMillis >=Timer2_Interval)
   {
    if ((Check_BinActive(IndexCount) == true) 
       && (Check_Month(IndexCount, 2))
       && (Check_Week(IndexCount, WeekNo))
       && (Check_Day (IndexCount,DoW))
+      && (Check_Alarm (IndexCount,Hour, Minute))
     )
     {
      //------------------------- Debug ---------------------------
-      Serial.print("Month active  : ");
-      Serial.println(Check_Month(IndexCount, 2));
-      Serial.print("index = "); 
-      Serial.print(IndexCount); 
-      Serial.print(" -> "); 
-      Serial.println("Bin Active");
+      //Serial.print("Month active  : ");
+      //Serial.println(Check_Month(IndexCount, 2));
+      //Serial.print("index = "); 
+      //Serial.print(IndexCount); 
+      //Serial.print(" -> "); 
+      //Serial.println("Bin Active");
       //-----------------------------------------------------------
       Display_CurrentBin(Bin_[IndexCount].Colour, DoW,Day,Month,Year);
-      
-
-
+      Serial.print("Time ");Serial.print(Hour);Serial.print(":");Serial.print(Minute);Serial.print(":");Serial.println(Second);
       IndexCount++; 
   if (IndexCount >= NumberOfBin ) {IndexCount = 0;}
    Timer2_PrevoiusMillis = Timer2_CurrentMillis;
@@ -143,13 +148,11 @@ switch(CurrentState){
   IndexCount++; 
 if (IndexCount >= NumberOfBin) {IndexCount = 0;}
   }
-  } 
-   
-   // GoToStep(4);
+}
  break;
  //**************************************************************
- case 4: // Check bins
-   GoToStep(1);
+ case 4: 
+   GoToStep(5);
  break;
  case 5: // spare
    GoToStep(6);
