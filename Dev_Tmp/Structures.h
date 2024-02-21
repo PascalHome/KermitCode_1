@@ -16,9 +16,10 @@ struct Bin_Type{
   byte CollectionDay;             // Sunday = 0, Saturday =6
   byte CoollectionStartWeek;      // Start from week 1 to week n
   byte CollectionFrequency;       // Weeks Odd 1 or Even 2
-  byte AlarmStartHour;
-  byte AlarmStartMinute;
-  unsigned int AlarmDuration;     // Duration in minute
+  int AlarmStartHour;
+  int AlarmStartMinute;
+  int AlarmStopHour;
+  int AlarmStopMinute;
   unsigned int CollectionMonth;   // b0011 1111 1111 1111 (12 months)
 
 }; // Structure size 24 bytes

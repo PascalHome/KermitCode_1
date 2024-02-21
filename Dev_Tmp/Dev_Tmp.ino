@@ -3,7 +3,7 @@
 // 15/Feb/2024 - KermitCode_1-Dev03 implementation of check
 // 16/Feb/2024 - KermitCode_1-Dev04 Refactoring of function Check_Day()
 // 16/Feb/2024 - KermitCode_1-Dev05 Integration Hr/Min to Bin structure + record to Flashmemory
-// 17/Feb/2024 - KermitCode_1-Dev06 Integration of no bin
+// 21/Feb/2024 - KermitCode_1-Dev06 Code stable !
 
 //-------------------- Included files ----------------------
 #include "DueHardware.h"
@@ -19,6 +19,7 @@
 unsigned long Timer1_CurrentMillis  = 0;
 unsigned long Timer1_PrevoiusMillis = 0;
 unsigned long Timer1_Interval       = 1000;
+#define Delay2Second 2
 #define Delay3Second 3 
 #define Delay5Second 5
 #define Delay10Second 10
@@ -26,10 +27,10 @@ unsigned long SecondCount = 0;
 //------------------------ Timer2 --------------------------
 unsigned long Timer2_CurrentMillis  = 0;
 unsigned long Timer2_PrevoiusMillis = 0;
-unsigned long Timer2_Interval       = 5000;
+unsigned long Timer2_Interval       = 3000;
 unsigned long IndexCount = 0;
 //----------------------- State machine --------------------
-#define InitialStep 0
+#define InitialStep 2
 byte CurrentState = 0;
 #define GoToStep(a) CurrentState = a;  // Textual substitution 
 //--------------------- Global variable --------------
@@ -91,9 +92,9 @@ Timer1_CurrentMillis = millis();
 }
 switch(CurrentState){
  case 0: // initial step ---- Nag Screen
-   Display_StartPage(Green,Delay3Second); // White, Green, Blue, Brown, Yellow, Red, Gray
+   Display_StartPage(Red,Delay2Second); // White, Green, Blue, Brown, Yellow, Red, Gray
    Timer1_PrevoiusMillis= 0;
-   SecondCount =- (Delay3Second+1); // adjust SecondCount to reflect reality of time elapsed second
+   SecondCount =- (Delay2Second); // adjust SecondCount to reflect reality of time elapsed second
    Display_Clear();
    GoToStep(1);
  break;
@@ -102,62 +103,50 @@ switch(CurrentState){
    delay(1000);
    if (SecondCount % Delay5Second == 1) {
     Display_Clear();
+    Serial.println("In step 1");
     GoToStep(2);}  
   break;
  case 2: //
-    Display_DateTimePage_2(White, DoY,DiY,WeekNo,WeekInYear);
+  Display_DateTimePage_2(White, DoY,DiY,WeekNo,WeekInYear);
    delay(1000);
    if (SecondCount % Delay5Second == 1) {
     Display_Clear();
-    GoToStep(3);}  
+     GoToStep(3);
+    }  
  break;
  case 3: // Bin check *******************************************
- Timer2_CurrentMillis = millis();
- if (Check_BinActive(IndexCount) 
-      && (Check_Month(IndexCount, 2))
-      && (Check_Week(IndexCount, WeekNo))
-      && (Check_Day (IndexCount,DoW))
-      && (Check_Alarm (IndexCount,Hour, Minute)) != true
-    ){
-     GoToStep(4);
-    } 
+    for(IndexCount=0;IndexCount<NumberOfBin;IndexCount++){
+        if ((Check_BinActive(IndexCount)) 
+          & (Check_Month(IndexCount, Month))
+          & (Check_Week(IndexCount, WeekNo))
+          & (Check_Day (IndexCount,DoW))
+          & (Check_Month(IndexCount, Month))
+          & (Check_Alarm (IndexCount,Hour, Minute)) == true) 
+         {
+          Display_CurrentBin(Bin_[IndexCount].Colour, DoW,Day,Month,Year);
+          Serial.print("Time ");Serial.print(Hour);Serial.print(":");Serial.print(Minute);Serial.print(":");Serial.println(Second);
+          Serial.print("IndexCount: "); Serial.print(IndexCount); Serial.print(" - "); 
+          Serial.print("Active: "); Serial.print(Check_BinActive(IndexCount)); Serial.print(" - "); 
+          Serial.print("Nonth: "); Serial.print(Check_Month(IndexCount, Month)); Serial.print(" - "); 
+          Serial.print("WeekNo: "); Serial.print(Check_Week(IndexCount, WeekNo)); Serial.print(" - ");
+          Serial.print("DOW: "); Serial.print(Check_Day (IndexCount,DoW)); Serial.print(" - ");
+          Serial.print("Alarm: "); Serial.println(Check_Alarm (IndexCount,Hour, Minute)); 
+          delay(5000);
+         }
+    } GoToStep(1);
 
-  if (Timer2_CurrentMillis - Timer2_PrevoiusMillis >=Timer2_Interval)
-  {
-   if ((Check_BinActive(IndexCount) == true) 
-      && (Check_Month(IndexCount, 2))
-      && (Check_Week(IndexCount, WeekNo))
-      && (Check_Day (IndexCount,DoW))
-      && (Check_Alarm (IndexCount,Hour, Minute))
-    )
-    {
-     //------------------------- Debug ---------------------------
-      //Serial.print("Month active  : ");
-      //Serial.println(Check_Month(IndexCount, 2));
-      //Serial.print("index = "); 
-      //Serial.print(IndexCount); 
-      //Serial.print(" -> "); 
-      //Serial.println("Bin Active");
-      //-----------------------------------------------------------
-      Display_CurrentBin(Bin_[IndexCount].Colour, DoW,Day,Month,Year);
-      Serial.print("Time ");Serial.print(Hour);Serial.print(":");Serial.print(Minute);Serial.print(":");Serial.println(Second);
-      IndexCount++; 
-  if (IndexCount >= NumberOfBin ) {IndexCount = 0;}
-   Timer2_PrevoiusMillis = Timer2_CurrentMillis;
-  } else{
-  IndexCount++; 
-if (IndexCount >= NumberOfBin) {IndexCount = 0;}
-  }
-}
  break;
  //**************************************************************
- case 4: 
+ case 4:
+ Serial.println("In step 4");
    GoToStep(5);
  break;
  case 5: // spare
+ Serial.println("In step 5");
    GoToStep(6);
  break;
  case 6: // Return to Step 1
+  Serial.println("In step 6");
    GoToStep(1);
  break;
    }

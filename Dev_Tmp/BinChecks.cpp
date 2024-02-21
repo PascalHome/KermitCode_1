@@ -4,6 +4,9 @@
 
 extern Bin_Type Bin_[NumberOfBin];  // Set the array of bins
 byte Check = 0;
+int AlarmStart =0;
+int AlarmStop = 0;
+int CurrentTime =0;
 
 bool Check_Day(int _Index, byte _DoW){
   if(Bin_[_Index].CollectionDay == _DoW){
@@ -15,12 +18,12 @@ bool Check_BinActive(int _Index){
   if(Bin_[_Index].Active == true){ bitSet(Check,0);} else {bitClear(Check,0);}
   return bitRead(Check,0);
 }
-
-bool Check_Alarm(int _Index, byte _CurrentHour, byte _CurrentMinute){
-  int AlarmStart = (Bin_[_Index].AlarmStartHour*60) + Bin_[_Index].AlarmStartMinute;
-  int AlarmStop = AlarmStart + Bin_[_Index].AlarmDuration;
-  int CurrentTime = (_CurrentHour *60) + _CurrentMinute;  
-  if (CurrentTime >= AlarmStart && CurrentTime <= AlarmStop ){ 
+//*********************************************************************************
+bool Check_Alarm(int _Index, int _CurrentHour, int _CurrentMinute){
+  AlarmStart = Bin_[_Index].AlarmStartHour*60 + Bin_[_Index].AlarmStartMinute;
+  AlarmStop =  Bin_[_Index].AlarmStopHour*60 + Bin_[_Index].AlarmStopMinute;
+  CurrentTime = (_CurrentHour *60) + _CurrentMinute; 
+  if ((CurrentTime >= AlarmStart) & (CurrentTime<= AlarmStop) == true){
     return(true);
     } else {
     return(false);
