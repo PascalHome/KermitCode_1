@@ -34,10 +34,10 @@ Lcd.print(buf);
 void Display_DateTimePage_2(byte Colour, int _DoY, int _DiY, int _WeekNo, int _WeekInYear){
  Display_SetColor(Colour);
  Lcd.setCursor(0,0); 
- sprintf(buf,"Dy %03d/%03d >%03d",_DoY,_DiY, (_DiY-_DoY));
+ sprintf(buf,"  Day %03d/%03d ",_DoY,_DiY);
  Lcd.print(buf);
  Lcd.setCursor(0,1); 
- sprintf(buf,"Wk %02d/%02d", _WeekNo, _WeekInYear);
+ sprintf(buf,"  Week %02d/%02d", _WeekNo, _WeekInYear);
  Lcd.print(buf);
 } 
 
@@ -59,10 +59,10 @@ void Display_StartPage(byte Colour, int Second)
 {
 Display_SetColor(Colour);
 Lcd.setCursor(0,0); 
-sprintf(buf,"%s %s" ,SoftwareName, SoftwareVersion);
+sprintf(buf,"  %s  %s" ,SoftwareName, SoftwareVersion);
 Lcd.print(buf); 
 Lcd.setCursor(0,1); 
-sprintf(buf,"%s" ,DevelopperNickName);
+sprintf(buf,"   %s" ,DevelopperNickName);
 Lcd.print(buf);
 delay(Second * 1000); 
 Lcd.clear();

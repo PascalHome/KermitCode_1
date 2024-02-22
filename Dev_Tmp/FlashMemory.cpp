@@ -18,7 +18,7 @@ if (CodeRuningFirstTime){
 byte WriteFlashInit(void){
   Bin_[0].Active = true;
   Bin_[0].Colour = Green;
-  Bin_[0].CollectionDay = 1;
+  Bin_[0].CollectionDay = 4;
   Bin_[0].CoollectionStartWeek = 2;
   Bin_[0].CollectionFrequency = 2;
   Bin_[0].AlarmStartHour   = 16;
@@ -40,14 +40,14 @@ byte WriteFlashInit(void){
 ///-----------------------------------------------------
   Bin_[2].Active = true;
   Bin_[2].Colour = Brown;
-  Bin_[2].CollectionDay = 3;
+  Bin_[2].CollectionDay = 4;
   Bin_[2].CoollectionStartWeek = 2;
   Bin_[2].CollectionFrequency = 2;
   Bin_[2].AlarmStartHour   = 16;
   Bin_[2].AlarmStartMinute = 0;
-  Bin_[2].AlarmStopHour   = 22;
+  Bin_[2].AlarmStopHour   = 23;
   Bin_[2].AlarmStopMinute = 0;
-  Bin_[2].CollectionMonth = 0b00001111111111111000;
+  Bin_[2].CollectionMonth = 0b00001111111111111010;
 ///-----------------------------------------------------
 
 

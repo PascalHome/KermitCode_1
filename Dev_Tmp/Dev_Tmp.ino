@@ -4,7 +4,8 @@
 // 16/Feb/2024 - KermitCode_1-Dev04 Refactoring of function Check_Day()
 // 16/Feb/2024 - KermitCode_1-Dev05 Integration Hr/Min to Bin structure + record to Flashmemory
 // 21/Feb/2024 - KermitCode_1-Dev06 Code stable !
-
+// 21/Feb/2024 - KermitCode_1-Dev07 Code refactoring Version 1.A
+//                                  Arduino IDE From 2.3.1 to 2.3.2
 //-------------------- Included files ----------------------
 #include "DueHardware.h"
 #include "Setup.h"
@@ -30,7 +31,7 @@ unsigned long Timer2_PrevoiusMillis = 0;
 unsigned long Timer2_Interval       = 3000;
 unsigned long IndexCount = 0;
 //----------------------- State machine --------------------
-#define InitialStep 2
+#define InitialStep 0
 byte CurrentState = 0;
 #define GoToStep(a) CurrentState = a;  // Textual substitution 
 //--------------------- Global variable --------------
@@ -92,7 +93,7 @@ Timer1_CurrentMillis = millis();
 }
 switch(CurrentState){
  case 0: // initial step ---- Nag Screen
-   Display_StartPage(Red,Delay2Second); // White, Green, Blue, Brown, Yellow, Red, Gray
+   Display_StartPage(White,Delay2Second); // White, Green, Blue, Brown, Yellow, Red, Gray
    Timer1_PrevoiusMillis= 0;
    SecondCount =- (Delay2Second); // adjust SecondCount to reflect reality of time elapsed second
    Display_Clear();
