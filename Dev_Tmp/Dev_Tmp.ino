@@ -6,6 +6,9 @@
 // 21/Feb/2024 - KermitCode_1-Dev06 Code stable !
 // 21/Feb/2024 - KermitCode_1-Dev07 Code refactoring Version 1.A
 //                                  Arduino IDE From 2.3.1 to 2.3.2
+// 26/Feb/2024 - KermitCode_1-Dev08 Issue with date/Time code refactoring 1.C
+
+
 //-------------------- Included files ----------------------
 #include "DueHardware.h"
 #include "Setup.h"
@@ -42,14 +45,28 @@ DS3231 SysClock;                // I2C Realtime clock
 void setup() {
   ResetUART();
   Serial.begin(9600);
+  Wire.begin();
+  Wire.setClock(400000); // I2C at 400 kHz  
+  SysClock.begin();      // Init RTC
+
   // Check flash memory on boot and download if necessary 
-  if (CheckFlashInit()){  WriteFlashInit();}
+  if (CheckFlashInit()){  WriteFlashInit();
   ReadFlash();                                          // Read falash content and write Bin_[X] values
   // ------------- Get GDH from compilation ----------
   getDate(__DATE__,Day,Month,Year);
   getTime(__TIME__,Hour,Minute,Second);
   //-------------- Offset GDHn -----------------------
-  OffsetDateTime(21,Day,Month,Year,Hour,Minute,Second); // Estimated offset 18 seconds
+  OffsetDateTime(5,Day,Month,Year,Hour,Minute,Second); // Estimated offset 18 seconds
+  //-------------- Set DS3231 DateTime----------------
+  SysClock.fillByYMD(Year,Month,Day); 
+  SysClock.fillByHMS(Hour,Minute,Second);
+  SysClock.fillDayOfWeek((calcDayOfWeek(Day, Month, Year)));
+  SysClock.setTime();
+  //-------------------------------------------------- 
+   } else {
+  Display_Init(); 
+  ReadFlash();
+  }
   //------------------Display result -----------------
   // Serial.print("Day of the year: ");
   // Serial.println(calculateDayOfYear(Day, Month, Year));  //Serial.println(calculateDayOfYear(28, 11, 2023));
@@ -57,16 +74,6 @@ void setup() {
   // Serial.println(calcDayOfWeek(Day, Month, Year));      //Serial.println(calcDayOfWeek(28, 11, 2023));
   // Serial.print("Week Number: ");
   // Serial.println(calcWeekNumber(Day,Month,Year));      //Serial.println(calcWeekNumber(28,11,2023));
-  //-------------- Set DS3231 DateTime----------------
-  Wire.setClock(400000); // I2C at 400 kHz  
-  Wire.begin();
-  SysClock.begin();      // Init RTC
-  SysClock.fillByYMD(Year,Month,Day); 
-  SysClock.fillByHMS(Hour,Minute,Second);
-  SysClock.fillDayOfWeek((calcDayOfWeek(Day, Month, Year)));
-  SysClock.setTime();
-  //-------------------------------------------------- 
-   Display_Init(); 
   //----------------------------------------------------
    CurrentState = InitialStep; // initialise state machine
    //---------------------------------------------------

@@ -7,7 +7,7 @@
 
 extern Bin_Type Bin_[NumberOfBin];  // Set the array of bins
 
-byte CheckFlashInit(void); // Check if memory is blank
+bool CheckFlashInit(void); // Check if memory is blank
 byte WriteFlashInit(void); // Write initial values
 int WriteFlash(void);
 int ReadFlash(void);

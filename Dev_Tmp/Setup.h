@@ -12,7 +12,7 @@ static char *BinColour[8]         ={"---","White", "Green", "Blue","Brown","Yell
 // from enum {NoColour = 0, White, Green, Blue, Brown, Yellow, Red, Gray} colour;
 //------------------Start page ----------------
 const char SoftwareName[] =       "BinDeal"; 
-const char SoftwareVersion[] =    " 1.A";
+const char SoftwareVersion[] =    " 1.C";
 const char DevelopperNickName[] = "KermitCode";
 //--------------------------------------------
 
