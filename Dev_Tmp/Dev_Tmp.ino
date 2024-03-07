@@ -5,9 +5,9 @@
 // 16/Feb/2024 - KermitCode_1-Dev05 Integration Hr/Min to Bin structure + record to Flashmemory
 // 21/Feb/2024 - KermitCode_1-Dev06 Code stable !
 // 21/Feb/2024 - KermitCode_1-Dev07 Code refactoring Version 1.A
-//                                  Arduino IDE From 2.3.1 to 2.3.2
+//                                Arduino IDE From 2.3.1 to 2.3.2
 // 26/Feb/2024 - KermitCode_1-Dev08 Issue with date/Time code refactoring 1.C
-
+// 07/Mar/2024 - KermitCode_1-Dev09 Review bin mont. Code under test since 1 week.
 
 //-------------------- Included files ----------------------
 #include "DueHardware.h"

@@ -47,7 +47,7 @@ byte WriteFlashInit(void){
   Bin_[2].AlarmStartMinute = 0;
   Bin_[2].AlarmStopHour   = 20;
   Bin_[2].AlarmStopMinute = 0;
-  Bin_[2].CollectionMonth = 0b00001111111111111000;
+  Bin_[2].CollectionMonth = 0b00000011111111111100;
 ///-----------------------------------------------------
 
 
